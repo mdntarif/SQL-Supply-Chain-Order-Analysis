@@ -1,0 +1,831 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Supply Chain Order Analysis</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+    margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(55, 53, 47, 1);
+}
+.highlight-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.highlight-default_background {
+	color: rgba(55, 53, 47, 1);
+}
+.highlight-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.highlight-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.block-color-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-uiBlue { background-color: rgba(35, 131, 226, .07); }
+.select-value-color-pink { background-color: rgba(245, 224, 233, 1); }
+.select-value-color-purple { background-color: rgba(232, 222, 238, 1); }
+.select-value-color-green { background-color: rgba(219, 237, 219, 1); }
+.select-value-color-gray { background-color: rgba(227, 226, 224, 1); }
+.select-value-color-transparentGray { background-color: rgba(227, 226, 224, 0); }
+.select-value-color-translucentGray { background-color: rgba(0, 0, 0, 0.06); }
+.select-value-color-orange { background-color: rgba(250, 222, 201, 1); }
+.select-value-color-brown { background-color: rgba(238, 224, 218, 1); }
+.select-value-color-red { background-color: rgba(255, 226, 221, 1); }
+.select-value-color-yellow { background-color: rgba(253, 236, 200, 1); }
+.select-value-color-blue { background-color: rgba(211, 229, 239, 1); }
+.select-value-color-pageGlass { background-color: undefined; }
+.select-value-color-washGlass { background-color: undefined; }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="1226d46d-dacb-8063-9436-d8b30934e4fc" class="page sans"><header><div class="page-header-icon undefined"><span class="icon">⛓️</span></div><h1 class="page-title">Supply Chain Order Analysis</h1><p class="page-description"></p></header><div class="page-body"><h2 id="1256d46d-dacb-807e-a15d-ff47f4a171ef" class=""><strong>Project Title:</strong></h2><p id="1256d46d-dacb-8008-92f0-daefb58a1323" class="">Supply Chain Order Analysis</p><h2 id="1256d46d-dacb-80b4-80f1-c3141ae32e46" class=""><strong>Description:</strong></h2><p id="1256d46d-dacb-8067-8582-c37074a97c7f" class="">The <strong>Supply Chain Order Analysis</strong> project focuses on analyzing sales and canceled orders from a supply chain dataset. It uses SQL to extract insights from two CSV files- “canceled_test.csv” and “sales_test.csv” which include data such as order numbers, customer IDs, item details, and the number of units ordered and shipped. The project involves performing volume analysis, service level calculations, and ABC classification to classify items based on their contribution to total sales. Through this project, key supply chain metrics like order fulfillment, customer behavior, and cancellation patterns are analyzed, helping identify inefficiencies and trends for further optimization.</p><h2 id="1256d46d-dacb-809b-9665-cc272f32994e" class=""><strong>Tools Used:</strong></h2><ul id="1256d46d-dacb-808b-8aa6-d65ec7e98347" class="bulleted-list"><li style="list-style-type:disc">SQL</li></ul><ul id="1256d46d-dacb-80ae-9bc1-cd23f75a7d2a" class="bulleted-list"><li style="list-style-type:disc">MySQL</li></ul><ul id="1256d46d-dacb-802c-a8b8-e8b89fa215f7" class="bulleted-list"><li style="list-style-type:disc">PostgreSQL (or any SQL database)</li></ul><h2 id="1256d46d-dacb-8065-a0a2-f9c0df77b8e6" class="">Dataset:</h2><p id="1256d46d-dacb-80d1-aecf-f40262d10a8d" class="">I downloarded the dataset from Kaggle.</p><p id="1256d46d-dacb-809e-ad22-eabe3decfc53" class="">You can downloard and practice it too.</p><p id="1256d46d-dacb-807b-89eb-f16949fed1e9" class="">Link- <a href="https://www.kaggle.com/datasets/annelee1/supply-chain-cel-dataset">https://www.kaggle.com/datasets/annelee1/supply-chain-cel-dataset</a></p><p id="1256d46d-dacb-8056-9b50-f4504f7aeb6a" class="">Or</p><p id="1256d46d-dacb-80f9-9ec8-ecfd73564237" class="">Don&#x27;t stress so much, I am giving you the files</p><figure id="1256d46d-dacb-80da-98d4-dc7bdb8cec6a"><div class="source"><a href="Supply%20Chain%20Order%20Analysis%201226d46ddacb80639436d8b30934e4fc/canceled_test.csv">canceled_test.csv</a></div></figure><figure id="1256d46d-dacb-80db-b2a9-f25c780c913f"><div class="source"><a href="Supply%20Chain%20Order%20Analysis%201226d46ddacb80639436d8b30934e4fc/sales_test.csv">sales_test.csv</a></div></figure><p id="1256d46d-dacb-8065-a641-fdcb498d09b9" class="">
+</p><h2 id="1256d46d-dacb-805f-8ddf-df357f398a66" class="">Task:</h2><p id="1256d46d-dacb-802d-a579-d0ef7f58e434" class=""><strong>Basic:</strong></p><ol type="1" id="1266d46d-dacb-80f5-a600-c615241231f6" class="numbered-list" start="1"><li>How many orders were placed in January 2017 in the sales_test.csv dataset?</li></ol><ol type="1" id="1266d46d-dacb-80ba-bf7e-fa717c83fbbf" class="numbered-list" start="2"><li>What is the total number of units ordered (NS_ORDER) in February 2017?</li></ol><ol type="1" id="1266d46d-dacb-8009-9a6e-d87882a65376" class="numbered-list" start="3"><li>Find the number of canceled orders (NC_ORDER) for each customer in canceled_test.csv.</li></ol><ol type="1" id="1266d46d-dacb-807c-83c8-c301f92d35b6" class="numbered-list" start="4"><li>How many unique customers are there in the sales_test.csv dataset?</li></ol><ol type="1" id="1266d46d-dacb-8076-9dd1-eb473508f917" class="numbered-list" start="5"><li>Find the average number of items ordered (NS_ORDER) per order in the sales_test.csv dataset.</li></ol><ol type="1" id="1266d46d-dacb-8099-b4b7-e4f06a7621e7" class="numbered-list" start="6"><li>List the top 5 items that have been ordered the most in the sales_test.csv.</li></ol><ol type="1" id="1266d46d-dacb-8070-8dbf-d4890d42ee98" class="numbered-list" start="7"><li>Find the total number of successful orders (NS_ORDER) where the CUSTOMER_NO is either 1857566 or 1358538 and the DATE is in January 2017.</li></ol><p id="1256d46d-dacb-8051-97b8-ceabf203c232" class="">
+</p><p id="1256d46d-dacb-80f2-bfd3-d42cc6ff84cc" class=""><strong>Intermediate</strong></p><ol type="1" id="1266d46d-dacb-80b3-af46-fa31e259c3e1" class="numbered-list" start="8"><li>Find the total number of units ordered (NS_ORDER) and canceled (NC_ORDER) for each item that appears in both sales_test.csv and canceled_test.csv. Include items that have been both ordered and canceled.</li></ol><ol type="1" id="1256d46d-dacb-80aa-9258-d45dcdb2f159" class="numbered-list" start="9"><li>Compare the number of canceled orders (NC_ORDER) and successful orders (NS_ORDER) for the same items.</li></ol><ol type="1" id="1256d46d-dacb-8084-a66f-e09319a3c2c1" class="numbered-list" start="10"><li>Classify each order in the sales_test.csv dataset as &#x27;High&#x27;, &#x27;Medium&#x27;, or &#x27;Low&#x27; based on the number of units ordered (NS_ORDER):<ul id="1266d46d-dacb-8012-a410-f14d977cd77e" class="bulleted-list"><li style="list-style-type:disc">&#x27;High&#x27; if NS_ORDER is greater than 50.</li></ul><ul id="1266d46d-dacb-8023-b69b-c3b292fda069" class="bulleted-list"><li style="list-style-type:disc">&#x27;Medium&#x27; if NS_ORDER is between 20 and 50.</li></ul><ul id="1266d46d-dacb-806b-9f0d-d6cce60a67ed" class="bulleted-list"><li style="list-style-type:disc">&#x27;Low&#x27; if NS_ORDER is less than 20.</li></ul></li></ol><ol type="1" id="1256d46d-dacb-8083-8c7d-ca2d87546bf2" class="numbered-list" start="11"><li>Calculate the percentage of shipped items (NS_SHIP) out of the total ordered (NS_ORDER) for each customer in sales_test.csv.</li></ol><ol type="1" id="1256d46d-dacb-8017-a1a7-f5fada7cf8ee" class="numbered-list" start="12"><li>Find the top 3 customers with the most canceled orders in canceled_test.csv.</li></ol><ol type="1" id="1266d46d-dacb-8066-8558-ec25e99956d2" class="numbered-list" start="13"><li>List all the items that have been canceled more than shipped in canceled_test.csv.</li></ol><ol type="1" id="1266d46d-dacb-80d3-9dcc-c09789bb6a3d" class="numbered-list" start="14"><li>Find the customer who placed the largest number of orders in January 2017 from the sales_test.csv dataset.</li></ol><p id="1256d46d-dacb-8046-9234-dc42c66e4fb0" class="">
+</p><p id="1256d46d-dacb-8081-8908-c2cefb72c36f" class=""><strong>Advanced:</strong></p><ol type="1" id="1256d46d-dacb-80f4-a238-f1262ff249eb" class="numbered-list" start="15"><li>For each customer, calculate the cumulative total of ordered units (NS_ORDER) over time and rank the orders by date. Show the ORDER_NO, CUSTOMER_NO, NS_ORDER, DATE, and the cumulative total of ordered units.</li></ol><ol type="1" id="1256d46d-dacb-80b3-a9e7-f976a19eab3a" class="numbered-list" start="16"><li>Find the top 3 customers who have the highest total number of canceled orders (NC_ORDER) from canceled_test.csv and their corresponding total sales (NS_ORDER) from sales_test.csv.</li></ol><ol type="1" id="1256d46d-dacb-8063-a628-c0e1f26bd5ba" class="numbered-list" start="17"><li>Find out the contribution of top 5 customers (by total NS_ORDER) to overall sales.</li></ol><ol type="1" id="1256d46d-dacb-80bf-9d64-e2fe765272a9" class="numbered-list" start="18"><li>Perform an ABC classification of items in sales_test.csv, where:<ul id="1266d46d-dacb-80e3-85b5-cd7cdcf5a4c7" class="bulleted-list"><li style="list-style-type:disc">Class A: Top 20% of items contributing to 80% of total sales.</li></ul><ul id="1266d46d-dacb-80be-a0a4-d5c4dba2827d" class="bulleted-list"><li style="list-style-type:disc">Class B: Next 30% of items contributing to 15% of total sales.</li></ul><ul id="1266d46d-dacb-8004-8f2f-f145c528bee8" class="bulleted-list"><li style="list-style-type:disc">Class C: Remaining 50% of items.</li></ul></li></ol><p id="1256d46d-dacb-806e-b3ac-d527b42e0861" class="">
+</p><p id="1256d46d-dacb-8085-b3d4-c3c612ad6dab" class="">
+</p><h2 id="1256d46d-dacb-8037-8601-fa41105c0f0d" class=""><strong>Outcome:</strong></h2><p id="1256d46d-dacb-8096-b0be-c77e289802bf" class="">In this project, we analyzed the supply chain dataset to uncover key insights into order trends, customer behavior, and cancellation patterns. We performed volume analysis, service level assessments, and ABC classification of items. Our findings revealed the top-performing items, identified opportunities to reduce cancellations, and highlighted customer segments with the highest order values. This analysis provides actionable recommendations for optimizing inventory management and enhancing overall supply chain efficiency.</p><p id="1256d46d-dacb-80c0-9696-c60bdbed3470" class="">
+</p><h2 id="1256d46d-dacb-80a4-8c89-f3a3a11db977" class="">Let&#x27;s start solving the problems-</h2><figure id="1256d46d-dacb-80ce-b090-d93beb999031" class="image"><a href="Supply%20Chain%20Order%20Analysis%201226d46ddacb80639436d8b30934e4fc/image.gif"><img style="width:522px" src="Supply%20Chain%20Order%20Analysis%201226d46ddacb80639436d8b30934e4fc/image.gif"/></a></figure><p id="1256d46d-dacb-807d-8e15-fd3225770869" class="">
+</p><p id="1256d46d-dacb-8005-ac28-f7759c24abd7" class="">
+</p><p id="1256d46d-dacb-8090-a3b6-f53ac547186b" class="">At first I have to import the 2 csv files in the mysql workbench</p><figure id="1256d46d-dacb-8093-b601-ec567b848c7b" class="image"><a href="Supply%20Chain%20Order%20Analysis%201226d46ddacb80639436d8b30934e4fc/Screenshot_2024-10-20_at_12.00.03_PM.png"><img style="width:3420px" src="Supply%20Chain%20Order%20Analysis%201226d46ddacb80639436d8b30934e4fc/Screenshot_2024-10-20_at_12.00.03_PM.png"/></a></figure><figure id="1256d46d-dacb-8011-8dd3-f10fc3aab038" class="image"><a href="Supply%20Chain%20Order%20Analysis%201226d46ddacb80639436d8b30934e4fc/Screenshot_2024-10-20_at_12.03.47_PM.png"><img style="width:707.9921875px" src="Supply%20Chain%20Order%20Analysis%201226d46ddacb80639436d8b30934e4fc/Screenshot_2024-10-20_at_12.03.47_PM.png"/></a></figure><figure id="1256d46d-dacb-8001-8363-cb4d8c5daf96" class="image"><a href="Supply%20Chain%20Order%20Analysis%201226d46ddacb80639436d8b30934e4fc/Screenshot_2024-10-20_at_12.05.28_PM.png"><img style="width:2500px" src="Supply%20Chain%20Order%20Analysis%201226d46ddacb80639436d8b30934e4fc/Screenshot_2024-10-20_at_12.05.28_PM.png"/></a></figure><figure id="1256d46d-dacb-8002-bb8b-ce7d8a303ca7" class="image"><a href="Supply%20Chain%20Order%20Analysis%201226d46ddacb80639436d8b30934e4fc/Screenshot_2024-10-20_at_1.32.58_PM.png"><img style="width:707.984375px" src="Supply%20Chain%20Order%20Analysis%201226d46ddacb80639436d8b30934e4fc/Screenshot_2024-10-20_at_1.32.58_PM.png"/></a></figure><p id="1256d46d-dacb-8068-b3ea-d5b7f2419b3d" class="">Then chooche the first file you want to import</p><p id="1256d46d-dacb-8080-891e-e91ace2e2d25" class="">Then Next &gt; Next &gt; Finish</p><p id="1256d46d-dacb-80f4-9a36-d3e229759c3b" class="">Do the same fo the another file</p><figure id="1256d46d-dacb-8088-9d75-f9d67f2774a3" class="image"><a href="Supply%20Chain%20Order%20Analysis%201226d46ddacb80639436d8b30934e4fc/Screenshot_2024-10-20_at_1.37.46_PM.png"><img style="width:707.9921875px" src="Supply%20Chain%20Order%20Analysis%201226d46ddacb80639436d8b30934e4fc/Screenshot_2024-10-20_at_1.37.46_PM.png"/></a></figure><p id="1256d46d-dacb-80c5-9436-f745ee842c77" class="">
+</p><p id="1256d46d-dacb-80e8-86ae-c69238349991" class="">Now we have to understand the dataset.</p><h3 id="1256d46d-dacb-80df-9b15-dc6353828161" class="">Understanding the Dataset</h3><p id="1256d46d-dacb-80dd-a274-dbc5c974e092" class="">The <strong>Supply chain CEL dataset</strong> contains data related to orders in a supply chain system for January and February 2017. The dataset has two CSV files:</p><ol type="1" id="1256d46d-dacb-80e5-a138-e6bb7d7a5f8c" class="numbered-list" start="1"><li><strong>canceled_test.csv</strong>: This file contains information about orders that were canceled.<ul id="1256d46d-dacb-80af-b3c8-eb50d12731cc" class="bulleted-list"><li style="list-style-type:disc"><strong>Columns</strong>:<ul id="1256d46d-dacb-80df-b9ec-ebf252784c2d" class="bulleted-list"><li style="list-style-type:circle"><code>ORDER_NO</code>: Unique identifier for each order.</li></ul><ul id="1256d46d-dacb-8065-88eb-d780106f3d17" class="bulleted-list"><li style="list-style-type:circle"><code>DATE</code>: The date the order was placed.</li></ul><ul id="1256d46d-dacb-8096-8877-d3f74a21a03b" class="bulleted-list"><li style="list-style-type:circle"><code>LINE</code>: The line number of the order.</li></ul><ul id="1256d46d-dacb-80a0-90ed-eac1f01e26d0" class="bulleted-list"><li style="list-style-type:circle"><code>CUSTOMER_NO</code>: The customer ID.</li></ul><ul id="1256d46d-dacb-80df-9555-e624ea1c5940" class="bulleted-list"><li style="list-style-type:circle"><code>ITEM</code>: The item ID.</li></ul><ul id="1256d46d-dacb-80bb-913d-ef5306b979b9" class="bulleted-list"><li style="list-style-type:circle"><code>NC_ORDER</code>: Number of units ordered.</li></ul><ul id="1256d46d-dacb-8099-b4c1-e208fb5e16aa" class="bulleted-list"><li style="list-style-type:circle"><code>NC_SHIP</code>: Number of units shipped (since it’s a canceled dataset, this might indicate canceled units).</li></ul></li></ul></li></ol><figure id="1256d46d-dacb-800f-b2f6-c7e41b66a764" class="image"><a href="Supply%20Chain%20Order%20Analysis%201226d46ddacb80639436d8b30934e4fc/Copy_of_Copy_of_Copy_of_class_Car_def___init__(self_brand_model)_self.brand__brand_self.model__model.png"><img style="width:708px" src="Supply%20Chain%20Order%20Analysis%201226d46ddacb80639436d8b30934e4fc/Copy_of_Copy_of_Copy_of_class_Car_def___init__(self_brand_model)_self.brand__brand_self.model__model.png"/></a></figure><ol type="1" id="1256d46d-dacb-80ec-aeec-fb7a7984c313" class="numbered-list" start="2"><li><strong>sales_test.csv</strong>: This file includes information about successful orders.<ul id="1256d46d-dacb-80cb-b103-dca6e4c4886c" class="bulleted-list"><li style="list-style-type:disc"><strong>Columns</strong>:<ul id="1256d46d-dacb-8029-a898-da75a7d7e138" class="bulleted-list"><li style="list-style-type:circle"><code>ORDER_NO</code>: Unique identifier for each order.</li></ul><ul id="1256d46d-dacb-8025-9de4-d26fcd386d29" class="bulleted-list"><li style="list-style-type:circle"><code>DATE</code>: The date the order was placed.</li></ul><ul id="1256d46d-dacb-80d8-a906-fb4fd0f11fc8" class="bulleted-list"><li style="list-style-type:circle"><code>LINE</code>: The line number of the order.</li></ul><ul id="1256d46d-dacb-80f5-ba7b-e2946395a204" class="bulleted-list"><li style="list-style-type:circle"><code>CUSTOMER_NO</code>: The customer ID.</li></ul><ul id="1256d46d-dacb-807e-9131-caf9fb6fd11d" class="bulleted-list"><li style="list-style-type:circle"><code>ITEM</code>: The item ID.</li></ul><ul id="1256d46d-dacb-80e4-b1d8-e8dc5459de25" class="bulleted-list"><li style="list-style-type:circle"><code>NS_ORDER</code>: Number of units ordered.</li></ul><ul id="1256d46d-dacb-80bd-b54a-cafafaedcbaf" class="bulleted-list"><li style="list-style-type:circle"><code>NS_SHIP</code>: Number of units shipped (for fulfilled orders, this should match <code>NS_ORDER</code>).</li></ul></li></ul></li></ol><figure id="1256d46d-dacb-802c-929c-ded7e4e2211a" class="image"><a href="Supply%20Chain%20Order%20Analysis%201226d46ddacb80639436d8b30934e4fc/Copy_of_Copy_of_Copy_of_class_Car_def___init__(self_brand_model)_self.brand__brand_self.model__model_(1).png"><img style="width:708px" src="Supply%20Chain%20Order%20Analysis%201226d46ddacb80639436d8b30934e4fc/Copy_of_Copy_of_Copy_of_class_Car_def___init__(self_brand_model)_self.brand__brand_self.model__model_(1).png"/></a></figure><p id="1266d46d-dacb-80e6-80fd-d09b99f8568d" class="">
+</p><p id="1266d46d-dacb-80fa-9f01-f74d673ad37b" class="">
+</p><p id="1266d46d-dacb-800f-ba4a-ce4b8c2ae601" class="">
+</p><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="1266d46d-dacb-802b-832b-d82409c8bbc1"><div style="font-size:1.5em"><span class="icon">🟢</span></div><div style="width:100%"><h1 id="1256d46d-dacb-80d1-8767-df696e50a852" class=""><strong>Basic:</strong></h1></div></figure><h3 id="1256d46d-dacb-8098-aaba-d0d25b44447d" class="">1. How many orders were placed in January 2017 in the sales_test.csv dataset?</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1256d46d-dacb-8043-ad27-e1209a61afe3" class="code"><code class="language-SQL">SELECT COUNT(ORDER_NO) as Order_placed_in_January
+FROM sales_test 
+WHERE DATE LIKE &#x27;%January%&#x27;;</code></pre><figure id="1256d46d-dacb-807b-b7e8-e4d5a3aafad5" class="image"><a href="Supply%20Chain%20Order%20Analysis%201226d46ddacb80639436d8b30934e4fc/Copy_of_Add_a_subheading_(1).gif"><img style="width:708px" src="Supply%20Chain%20Order%20Analysis%201226d46ddacb80639436d8b30934e4fc/Copy_of_Add_a_subheading_(1).gif"/></a></figure><p id="1256d46d-dacb-8003-8240-d57a540d8311" class="">
+</p><h3 id="1256d46d-dacb-8049-8fd0-e32b9f926759" class="">2. What is the total number of units ordered (NS_ORDER) in February 2017?</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1256d46d-dacb-8082-98ba-d698949613c7" class="code"><code class="language-SQL">SELECT SUM(NS_ORDER) as total_number_of_units
+FROM sales_test 
+WHERE DATE LIKE &#x27;%February%&#x27;;</code></pre><figure id="1256d46d-dacb-8071-b1ef-c3d63e41661f" class="image"><a href="Supply%20Chain%20Order%20Analysis%201226d46ddacb80639436d8b30934e4fc/Copy_of_Add_a_subheading_(2).gif"><img style="width:708px" src="Supply%20Chain%20Order%20Analysis%201226d46ddacb80639436d8b30934e4fc/Copy_of_Add_a_subheading_(2).gif"/></a></figure><p id="1256d46d-dacb-80f9-b3b7-d1fa508a437f" class="">
+</p><h3 id="1256d46d-dacb-807e-8bc6-c173a9faf131" class="">3. Find the number of canceled orders (NC_ORDER) for each customer in canceled_test.csv.</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1256d46d-dacb-80ce-b3bc-ce28ab4afcaa" class="code"><code class="language-SQL">SELECT CUSTOMER_NO, SUM(NC_ORDER) as total_canceled_order
+FROM canceled_test
+GROUP BY CUSTOMER_NO;</code></pre><figure id="1256d46d-dacb-8078-a5bb-c4225609018f" class="image"><a href="Supply%20Chain%20Order%20Analysis%201226d46ddacb80639436d8b30934e4fc/Copy_of_Add_a_subheading_(3).gif"><img style="width:708px" src="Supply%20Chain%20Order%20Analysis%201226d46ddacb80639436d8b30934e4fc/Copy_of_Add_a_subheading_(3).gif"/></a></figure><p id="1256d46d-dacb-8015-852f-c97e5fa13c80" class="">
+</p><h3 id="1256d46d-dacb-804f-bfc7-fbde7ff7a81f" class="">4. How many unique customers are there in the sales_test.csv dataset?</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1256d46d-dacb-80e9-a044-fc0eb6ea4395" class="code"><code class="language-SQL">SELECT COUNT(DISTINCT CUSTOMER_NO) as unique_customers
+FROM sales_test;</code></pre><figure id="1256d46d-dacb-80a9-a6f8-eae0d7f3299c" class="image"><a href="Supply%20Chain%20Order%20Analysis%201226d46ddacb80639436d8b30934e4fc/Copy_of_Add_a_subheading_(4).gif"><img style="width:708px" src="Supply%20Chain%20Order%20Analysis%201226d46ddacb80639436d8b30934e4fc/Copy_of_Add_a_subheading_(4).gif"/></a></figure><p id="1256d46d-dacb-8012-9026-f51d49a3a0cf" class="">
+</p><h3 id="1256d46d-dacb-800f-8a9a-cd567b72acb1" class="">5. Find the average number of items ordered (NS_ORDER) per order in the sales_test.csv dataset.</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1256d46d-dacb-802a-a8a4-f9fd49d32837" class="code"><code class="language-SQL">SELECT AVG(NS_ORDER) as average_number_of_items_ordered
+FROM sales_test;</code></pre><figure id="1256d46d-dacb-8049-a8d2-fb663f25425e" class="image"><a href="Supply%20Chain%20Order%20Analysis%201226d46ddacb80639436d8b30934e4fc/Copy_of_Add_a_subheading_(5).gif"><img style="width:708px" src="Supply%20Chain%20Order%20Analysis%201226d46ddacb80639436d8b30934e4fc/Copy_of_Add_a_subheading_(5).gif"/></a></figure><p id="1256d46d-dacb-8084-96dc-e4382acb2bc9" class="">
+</p><h3 id="1256d46d-dacb-80c6-8079-c3860b9f1301" class="">6. List the top 5 items that have been ordered the most in the sales_test.csv.</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1256d46d-dacb-802b-a438-d9073ca4f63e" class="code"><code class="language-SQL">SELECT ITEM, SUM(NS_ORDER) as total_ordered
+FROM sales_test
+GROUP BY ITEM
+ORDER BY total_ordered DESC
+LIMIT 5;</code></pre><figure id="1256d46d-dacb-807d-8ac5-d662aad086f5" class="image"><a href="Supply%20Chain%20Order%20Analysis%201226d46ddacb80639436d8b30934e4fc/Copy_of_Add_a_subheading_(6).gif"><img style="width:708px" src="Supply%20Chain%20Order%20Analysis%201226d46ddacb80639436d8b30934e4fc/Copy_of_Add_a_subheading_(6).gif"/></a></figure><p id="1266d46d-dacb-805d-8d81-e14f298ba91a" class="">
+</p><h3 id="1266d46d-dacb-80dd-928d-c79110f2c5d0" class="">7. Find the total number of successful orders (NS_ORDER) where the CUSTOMER_NO is either <strong>1857566</strong> or <strong>1358538</strong> and the DATE is in <strong>January 2017</strong>.</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1266d46d-dacb-807d-b326-ff8db9dac662" class="code"><code class="language-SQL">SELECT SUM(NS_ORDER) AS total_orders 
+FROM sales_test 
+WHERE (CUSTOMER_NO = 1857566 OR CUSTOMER_NO = 1358538)
+AND DATE LIKE &#x27;%January%&#x27;;</code></pre><figure id="1266d46d-dacb-8043-9de6-f5e88b4ea4ef" class="image"><a href="Supply%20Chain%20Order%20Analysis%201226d46ddacb80639436d8b30934e4fc/Copy_of_Add_a_subheading_(11).gif"><img style="width:708px" src="Supply%20Chain%20Order%20Analysis%201226d46ddacb80639436d8b30934e4fc/Copy_of_Add_a_subheading_(11).gif"/></a></figure><p id="1266d46d-dacb-80ae-bad7-e8f096a5813d" class="">
+</p><p id="1266d46d-dacb-805a-8b48-d17309422b9b" class="">
+</p><p id="1266d46d-dacb-80cc-b9e2-ca910002b032" class="">
+</p><p id="1266d46d-dacb-802a-a3f5-defe0c25e0c3" class="">
+</p><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="1266d46d-dacb-8046-825a-e61163ce2dff"><div style="font-size:1.5em"><span class="icon">🟠</span></div><div style="width:100%"><h1 id="1256d46d-dacb-80f7-9cd0-ec85a9f30bd6" class=""><strong>Intermediate:</strong></h1></div></figure><p id="1266d46d-dacb-8071-b29b-f5a4897ce94f" class="">
+</p><h3 id="1266d46d-dacb-8069-95b2-cfe1a4b452d3" class="">8. Find the total number of units ordered (NS_ORDER) and canceled (NC_ORDER) for each item that appears in both sales_test.csv and canceled_test.csv. Include items that have been both ordered and canceled.</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1266d46d-dacb-80e7-86e2-e4b7a2ae69fc" class="code"><code class="language-SQL">SELECT  s.ITEM,
+				SUM(s.NS_ORDER) as total_ordered,
+				SUM(c.NC_ORDER) as total_canceled
+FROM sales_test s
+INNER JOIN canceled_test c
+ON s.ITEM = c.ITEM
+GROUP BY s.ITEM;</code></pre><figure id="1266d46d-dacb-8068-b76f-cb73b13e1681" class="image"><a href="Supply%20Chain%20Order%20Analysis%201226d46ddacb80639436d8b30934e4fc/Copy_of_Add_a_subheading_(12).gif"><img style="width:708px" src="Supply%20Chain%20Order%20Analysis%201226d46ddacb80639436d8b30934e4fc/Copy_of_Add_a_subheading_(12).gif"/></a></figure><p id="1266d46d-dacb-8027-8904-ed373beeeb6d" class="">
+</p><h3 id="1256d46d-dacb-80a0-92fd-ea0cf2d97678" class="">9. Compare the number of canceled orders (NC_ORDER) and successful orders (NS_ORDER) for the same items.</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1256d46d-dacb-8090-8157-e26800a2eac7" class="code"><code class="language-SQL">SELECT  s.ITEM,
+				SUM(s.NS_ORDER) as total_ordered,
+        SUM(c.NC_ORDER) as total_cancelled
+FROM sales_test s
+LEFT JOIN canceled_test c
+ON s.ITEM=c.ITEM
+GROUP BY s.ITEM;</code></pre><figure id="1256d46d-dacb-806a-85dd-f4f76771cffc" class="image"><a href="Supply%20Chain%20Order%20Analysis%201226d46ddacb80639436d8b30934e4fc/Copy_of_Add_a_subheading_(7).gif"><img style="width:708px" src="Supply%20Chain%20Order%20Analysis%201226d46ddacb80639436d8b30934e4fc/Copy_of_Add_a_subheading_(7).gif"/></a></figure><p id="1256d46d-dacb-80aa-91da-e87b9dbeb473" class="">
+</p><h3 id="1266d46d-dacb-806b-ac88-c928fbdab5ba" class="">10. <strong>Classify each order in the sales_test.csv dataset as &#x27;High&#x27;, &#x27;Medium&#x27;, or &#x27;Low&#x27; based on the number of units ordered (NS_ORDER):</strong></h3><ul id="1266d46d-dacb-8025-8b64-dcd5f81a3141" class="bulleted-list"><li style="list-style-type:disc"><strong>&#x27;High&#x27; if NS_ORDER is greater than 50.</strong></li></ul><ul id="1266d46d-dacb-80f2-a2bc-dd6ecbf6abe7" class="bulleted-list"><li style="list-style-type:disc"><strong>&#x27;Medium&#x27; if NS_ORDER is between 20 and 50.</strong></li></ul><ul id="1266d46d-dacb-80ca-8fdd-d5d44f0e9563" class="bulleted-list"><li style="list-style-type:disc"><strong>&#x27;Low&#x27; if NS_ORDER is less than 20.</strong></li></ul><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1266d46d-dacb-8063-a231-c63f009120b7" class="code"><code class="language-SQL">SELECT  ORDER_NO,
+				NS_ORDER,
+        CASE
+        WHEN NS_ORDER &gt; 50 THEN &#x27;High&#x27;
+        WHEN NS_ORDER BETWEEN 20 AND 50 THEN &#x27;Medium&#x27;
+        ELSE &#x27;Low&#x27;
+        END as order_classification
+FROM sales_test;</code></pre><figure id="1266d46d-dacb-80df-b4d2-c412537e3967" class="image"><a href="Supply%20Chain%20Order%20Analysis%201226d46ddacb80639436d8b30934e4fc/Copy_of_Add_a_subheading_(14).gif"><img style="width:708px" src="Supply%20Chain%20Order%20Analysis%201226d46ddacb80639436d8b30934e4fc/Copy_of_Add_a_subheading_(14).gif"/></a></figure><p id="1266d46d-dacb-807f-87d1-e7746d04b6ff" class="">
+</p><h3 id="1256d46d-dacb-80f4-b75b-ea0f1b9c0174" class="">11. Calculate the percentage of shipped items (NS_SHIP) out of the total ordered (NS_ORDER) for each customer in sales_test.csv.</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1256d46d-dacb-8015-8ca0-e37ea8ff92ee" class="code"><code class="language-SQL">SELECT  CUSTOMER_NO,
+		SUM(NS_SHIP) / SUM(NS_ORDER) * 100 as ship_percentage
+FROM sales_test
+GROUP BY CUSTOMER_NO;</code></pre><figure id="1256d46d-dacb-80b9-9b6f-f27dd8d8b3f3" class="image"><a href="Supply%20Chain%20Order%20Analysis%201226d46ddacb80639436d8b30934e4fc/Copy_of_Add_a_subheading_(8).gif"><img style="width:708px" src="Supply%20Chain%20Order%20Analysis%201226d46ddacb80639436d8b30934e4fc/Copy_of_Add_a_subheading_(8).gif"/></a></figure><p id="1256d46d-dacb-80e7-a38b-fec4c4f414a7" class="">
+</p><h3 id="1256d46d-dacb-8049-b7a3-c4cc892ff06e" class="">12. Find the top 3 customers with the most canceled orders in canceled_test.csv.</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1256d46d-dacb-8080-b8b3-d3feeeda193b" class="code"><code class="language-SQL">SELECT  CUSTOMER_NO,
+				SUM(NC_ORDER) as total_cancelled
+FROM canceled_test
+GROUP BY CUSTOMER_NO
+ORDER BY total_cancelled DESC
+LIMIT 3;</code></pre><figure id="1256d46d-dacb-8009-9a05-ea77ff77c0a8" class="image"><a href="Supply%20Chain%20Order%20Analysis%201226d46ddacb80639436d8b30934e4fc/Copy_of_Add_a_subheading_(9).gif"><img style="width:708px" src="Supply%20Chain%20Order%20Analysis%201226d46ddacb80639436d8b30934e4fc/Copy_of_Add_a_subheading_(9).gif"/></a></figure><p id="1256d46d-dacb-806e-b9a5-fdb01d59c195" class="">
+</p><h3 id="1256d46d-dacb-8099-afb2-dc95a8215a8f" class="">13. List all the items that have been canceled more than shipped in canceled_test.csv.</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1256d46d-dacb-8025-9eae-fec6864e1385" class="code"><code class="language-SQL">SELECT  ITEM,
+				SUM(NC_ORDER) as cancelled,
+        SUM(NC_SHIP) as shipped
+FROM canceled_test
+GROUP BY ITEM
+HAVING cancelled &gt; shipped;</code></pre><figure id="1256d46d-dacb-80cb-9fab-f55fb46e9ca2" class="image"><a href="Supply%20Chain%20Order%20Analysis%201226d46ddacb80639436d8b30934e4fc/Copy_of_Add_a_subheading_(10).gif"><img style="width:708px" src="Supply%20Chain%20Order%20Analysis%201226d46ddacb80639436d8b30934e4fc/Copy_of_Add_a_subheading_(10).gif"/></a></figure><p id="1266d46d-dacb-806f-a5fe-e8e77b3bec06" class="">
+</p><h3 id="1266d46d-dacb-80a5-bbff-e620aedab0f4" class="">14. Find the customer who placed the largest number of orders in January 2017 from the sales_test.csv dataset.</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1266d46d-dacb-80af-bd77-e1550f9f81e2" class="code"><code class="language-SQL">SELECT CUSTOMER_NO, total_orders
+FROM (
+				SELECT  CUSTOMER_NO,
+				COUNT(NS_ORDER) as total_orders
+				FROM sales_test
+        WHERE DATE LIKE &#x27;%January%&#x27;
+        GROUP BY CUSTOMER_NO
+	    ) 
+	    as customer_orders
+ORDER BY total_orders DESC
+LIMIT 1;</code></pre><figure id="1266d46d-dacb-806c-af94-e9e6b95b32d7" class="image"><a href="Supply%20Chain%20Order%20Analysis%201226d46ddacb80639436d8b30934e4fc/Copy_of_Add_a_subheading_(13).gif"><img style="width:708px" src="Supply%20Chain%20Order%20Analysis%201226d46ddacb80639436d8b30934e4fc/Copy_of_Add_a_subheading_(13).gif"/></a></figure><p id="1266d46d-dacb-80dc-824f-c2f970290d2f" class="">
+</p><p id="1266d46d-dacb-80fb-8119-c208018ddf48" class="">
+</p><p id="1266d46d-dacb-80f4-9335-d89b695ad962" class="">
+</p><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="1266d46d-dacb-80e1-94d5-e4634d0b45c1"><div style="font-size:1.5em"><span class="icon">🔴</span></div><div style="width:100%"><h1 id="1256d46d-dacb-80b0-877e-d51067b09ef6" class=""><strong>Advanced:</strong></h1></div></figure><p id="1266d46d-dacb-80d4-ac85-decff8d4b714" class="">
+</p><h3 id="1266d46d-dacb-80bf-83e5-e5fe4dc544fa" class="">15. For each customer, calculate the cumulative total of ordered units (NS_ORDER) over time and rank the orders by date. Show the ORDER_NO, CUSTOMER_NO, NS_ORDER, DATE, and the cumulative total of ordered units.</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1266d46d-dacb-80a1-ad2e-d9f2284fb07d" class="code"><code class="language-SQL">SELECT 
+    ORDER_NO, 
+    CUSTOMER_NO, 
+    NS_ORDER, 
+    DATE, 
+    SUM(NS_ORDER) OVER (PARTITION BY CUSTOMER_NO ORDER BY DATE) AS cumulative_ordered_units,
+    ROW_NUMBER() OVER (PARTITION BY CUSTOMER_NO ORDER BY DATE) AS order_rank
+FROM 
+    sales_test
+ORDER BY 
+    CUSTOMER_NO, DATE;</code></pre><figure id="1266d46d-dacb-80b9-9519-f433e1a62423" class="image"><a href="Supply%20Chain%20Order%20Analysis%201226d46ddacb80639436d8b30934e4fc/Copy_of_Add_a_subheading_(15).gif"><img style="width:708px" src="Supply%20Chain%20Order%20Analysis%201226d46ddacb80639436d8b30934e4fc/Copy_of_Add_a_subheading_(15).gif"/></a></figure><p id="1266d46d-dacb-804c-9fde-feaa6e40c08a" class="">
+</p><h3 id="1266d46d-dacb-80f4-b2a1-f4cf21c4d334" class="">16. Find the top 3 customers who have the highest total number of canceled orders (NC_ORDER) from canceled_test.csv and their corresponding total sales (NS_ORDER) from sales_test.csv.</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1266d46d-dacb-802c-9765-cad67645ab57" class="code"><code class="language-SQL">-- CTE to calculate total canceled orders for each customer
+WITH canceled_orders AS (
+    SELECT CUSTOMER_NO, SUM(NC_ORDER) AS total_canceled
+    FROM canceled_test
+    GROUP BY CUSTOMER_NO
+)
+
+-- Query to join the CTE with the sales data
+SELECT c.CUSTOMER_NO, c.total_canceled, COALESCE(SUM(s.NS_ORDER), 0) AS total_sales
+FROM canceled_orders c
+LEFT JOIN sales_test s ON c.CUSTOMER_NO = s.CUSTOMER_NO
+GROUP BY c.CUSTOMER_NO, c.total_canceled
+ORDER BY c.total_canceled DESC
+LIMIT 3;</code></pre><figure id="1266d46d-dacb-80ef-b5cc-d461887b6237" class="image"><a href="Supply%20Chain%20Order%20Analysis%201226d46ddacb80639436d8b30934e4fc/Copy_of_Add_a_subheading_(16).gif"><img style="width:708px" src="Supply%20Chain%20Order%20Analysis%201226d46ddacb80639436d8b30934e4fc/Copy_of_Add_a_subheading_(16).gif"/></a></figure><p id="1266d46d-dacb-80e4-b2ab-e1b3c7543efa" class="">
+</p><h3 id="1256d46d-dacb-8048-ba38-d5177dc2d153" class="">17. Find out the contribution of top 5 customers (by total NS_ORDER) to overall sales.</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1266d46d-dacb-8001-a8a4-d3df490e776c" class="code"><code class="language-SQL">WITH total_sales AS (
+  SELECT SUM(NS_ORDER) AS total_sales FROM sales_test
+),
+top_customers AS (
+  SELECT CUSTOMER_NO, SUM(NS_ORDER) AS customer_sales 
+  FROM sales_test 
+  GROUP BY CUSTOMER_NO 
+  ORDER BY customer_sales DESC 
+  LIMIT 5
+)
+SELECT CUSTOMER_NO, customer_sales / (SELECT total_sales FROM total_sales) * 100 AS contribution_percentage 
+FROM top_customers;</code></pre><figure id="1266d46d-dacb-80d6-a9dd-d72c9e716640" class="image"><a href="Supply%20Chain%20Order%20Analysis%201226d46ddacb80639436d8b30934e4fc/Copy_of_Add_a_subheading_(17).gif"><img style="width:708px" src="Supply%20Chain%20Order%20Analysis%201226d46ddacb80639436d8b30934e4fc/Copy_of_Add_a_subheading_(17).gif"/></a></figure><p id="1266d46d-dacb-80d0-a546-d5cea0f68fd2" class="">
+</p><h3 id="1256d46d-dacb-80f4-92dd-e2a59c3691a4" class="">18. Perform an ABC classification of items in sales_test.csv, where:</h3><ul id="662ec074-4750-4b52-9b53-883ba2bad565" class="bulleted-list"><li style="list-style-type:disc"><strong>Class A: Top 20% of items contributing to 80% of total sales.</strong></li></ul><ul id="589bf930-fce0-4953-9801-5757fa856fdb" class="bulleted-list"><li style="list-style-type:disc"><strong>Class B: Next 30% of items contributing to 15% of total sales.</strong></li></ul><ul id="5b99bf8b-0681-44f7-a5c5-0817db7897d6" class="bulleted-list"><li style="list-style-type:disc"><strong>Class C: Remaining 50% of items.</strong></li></ul><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1266d46d-dacb-80bf-9a4b-e993a56f937c" class="code"><code class="language-SQL">WITH total_sales AS (
+  SELECT ITEM, SUM(NS_ORDER) AS item_sales 
+  FROM sales_test 
+  GROUP BY ITEM
+),
+ranked_sales AS (
+  SELECT ITEM, item_sales, 
+         NTILE(100) OVER (ORDER BY item_sales DESC) AS percentile 
+  FROM total_sales
+)
+SELECT ITEM, 
+       CASE 
+         WHEN percentile &lt;= 20 THEN &#x27;A&#x27; 
+         WHEN percentile &lt;= 50 THEN &#x27;B&#x27; 
+         ELSE &#x27;C&#x27; 
+       END AS abc_class 
+FROM ranked_sales;</code></pre><figure id="1266d46d-dacb-805d-812d-f5674e51deba" class="image"><a href="Supply%20Chain%20Order%20Analysis%201226d46ddacb80639436d8b30934e4fc/Copy_of_Add_a_subheading_(18).gif"><img style="width:708px" src="Supply%20Chain%20Order%20Analysis%201226d46ddacb80639436d8b30934e4fc/Copy_of_Add_a_subheading_(18).gif"/></a></figure><p id="1266d46d-dacb-80e1-a7fc-f50d028ef36e" class="">
+</p><p id="1266d46d-dacb-801f-946c-dad542d146e2" class="">
+</p><p id="1266d46d-dacb-804f-905c-dc580913b632" class="">
+</p><h3 id="1266d46d-dacb-80fe-abd9-f354c02365e0" class="">Conclusion of the Supply Chain CEL Dataset Project</h3><p id="1266d46d-dacb-8087-aae1-d4a61e3a492c" class="">In this project, we conducted a detailed analysis of the Supply Chain CEL dataset, focusing on the two key files: <code>canceled_test.csv</code> and <code>sales_test.csv</code>. Our primary objectives were to understand order patterns, assess service levels, and classify items based on their sales performance.</p><ol type="1" id="1266d46d-dacb-804b-a6dd-e9aa4f474022" class="numbered-list" start="1"><li><strong>Volume Analysis</strong>:<ul id="1266d46d-dacb-8099-89d1-deebc9d2a6ec" class="bulleted-list"><li style="list-style-type:disc">We examined the volume of orders placed, comparing successful sales with canceled orders. This analysis highlighted significant trends in customer behavior and order fulfillment.</li></ul></li></ol><ol type="1" id="1266d46d-dacb-8097-b60b-c81736d28f27" class="numbered-list" start="2"><li><strong>Cancellation Patterns</strong>:<ul id="1266d46d-dacb-8061-8dd3-cc400ede5e9c" class="bulleted-list"><li style="list-style-type:disc">By analyzing canceled orders, we identified specific days of the week that had higher cancellation rates. Understanding these patterns can help businesses implement strategies to reduce cancellations, such as improving communication with customers or addressing potential issues before they lead to order cancellations.</li></ul></li></ol><ol type="1" id="1266d46d-dacb-80cb-b9f8-ea98cb649bee" class="numbered-list" start="3"><li><strong>Service Level Evaluation</strong>:<ul id="1266d46d-dacb-80f2-b747-d87226c19699" class="bulleted-list"><li style="list-style-type:disc">We calculated the service levels for each customer, determining the percentage of shipped items compared to ordered items. This metric is crucial for assessing customer satisfaction and operational efficiency within the supply chain.</li></ul></li></ol><ol type="1" id="1266d46d-dacb-80d1-b7be-fa40f5e86afd" class="numbered-list" start="4"><li><strong>ABC Classification</strong>:<ul id="1266d46d-dacb-8037-b264-e66f5eddcd62" class="bulleted-list"><li style="list-style-type:disc">We performed an ABC classification of items based on their contribution to sales, enabling the business to prioritize inventory management strategies for high-impact items. This classification aids in optimizing stock levels, reducing holding costs, and ensuring that popular items are always available to meet customer demand.</li></ul></li></ol><ol type="1" id="1266d46d-dacb-803a-8c24-da3f2cbb70e1" class="numbered-list" start="5"><li><strong>Insights and Recommendations</strong>:<ul id="1266d46d-dacb-80d1-95bd-e329b55c364a" class="bulleted-list"><li style="list-style-type:disc">The findings suggest potential areas for operational improvement, including enhancing order processing and fulfillment strategies and refining customer engagement practices. By focusing on high-impact items and monitoring cancellation trends, businesses can improve service levels and overall customer satisfaction.</li></ul></li></ol><p id="1266d46d-dacb-8075-80e5-f1db6848794c" class="">In summary, this project demonstrated the value of data analytics in optimizing supply chain operations. The insights gained can help inform strategic decisions, improve inventory management, and enhance customer service in the dynamic environment of supply chain management. Future work may include a more in-depth investigation into the factors driving cancellations and a predictive analysis of customer ordering behaviors.</p><p id="1266d46d-dacb-80e3-b4bf-e62c9b9488a5" class="">
+</p></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>
