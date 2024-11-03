@@ -35,5 +35,3 @@ https://www.kaggle.com/datasets/annelee1/supply-chain-cel-dataset
 - **SQL**: For querying and analyzing the dataset.
     
 This project provides insights into supply chain performance and helps identify key areas for optimization in order management and customer service.
-
----
