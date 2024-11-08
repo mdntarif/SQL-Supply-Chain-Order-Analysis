@@ -34,3 +34,8 @@ I downloaded the dataset from [Kaggle](https://www.kaggle.com/datasets/annelee1/
 - **SQL**: For querying and analyzing the dataset.
     
 This project provides insights into supply chain performance and helps identify key areas for optimization in order management and customer service.
+
+## Contact
+For more information or questions regarding the project, please contact me via [LinkedIn](https://www.linkedin.com/in/mdtarif/)
+
+---
