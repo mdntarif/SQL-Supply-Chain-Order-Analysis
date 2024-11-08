@@ -11,8 +11,7 @@ This project focuses on analyzing a supply chain system using the **Supply Chain
   - **Columns**: `ORDER_NO`, `DATE`, `LINE`, `CUSTOMER_NO`, `ITEM`, `NS_ORDER`, `NS_SHIP`
  
 #### Original Dataset
-I downloaded the dataset from Kaggle.
-https://www.kaggle.com/datasets/annelee1/supply-chain-cel-dataset
+I downloaded the dataset from [Kaggle](https://www.kaggle.com/datasets/annelee1/supply-chain-cel-dataset)
 
 
 #### Objectives
